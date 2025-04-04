@@ -1,44 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>ส่ง Flex จาก LIFF</title>
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-</head>
-<body style="text-align:center; font-family:sans-serif; margin-top:50px;">
-  <h2>กำลังส่ง Flex ให้คุณผ่าน LIFF...</h2>
-  <p id="status">กรุณารอสักครู่...</p>
+const profile = await liff.getProfile();
+const userId = profile.userId;
 
-  <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwXmnC8n4VktgCZweK_SdHL6VHBUi0JnczklcLr1YAKZ_XmyZVQEBgYdoijGeGuWmWa/exec"; // 🔁 เปลี่ยนเป็น URL จาก Apps Script
-
-    async function main() {
-      try {
-        await liff.init({ liffId: "2005776859-WvyweL4D" }); // 🔁 เปลี่ยนเป็น LIFF ID ของคุณ
-        if (!liff.isLoggedIn()) liff.login();
-
-        const profile = await liff.getProfile();
-        const userId = profile.userId;
-        document.getElementById("status").innerText = "ส่งให้ userId: " + userId;
-
-        const res = await fetch(GAS_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: userId })
-        });
-
-        const result = await res.text();
-        document.getElementById("status").innerText = "✅ ส่ง Flex สำเร็จ: " + result;
-
-        setTimeout(() => {
-          liff.closeWindow();
-        }, 2000);
-      } catch (err) {
-        document.getElementById("status").innerText = "❌ Error: " + err;
-      }
-    }
-
-    main();
-  </script>
-</body>
-</html>
+const res = await fetch(GAS_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ userId: userId }) // ต้องเป็น key ชื่อ 'userId' เท่านั้น!
+});
